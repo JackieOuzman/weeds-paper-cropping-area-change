@@ -5,6 +5,7 @@ library(dplyr)
 library(tidyr)
 library(stringr)
 library(patchwork)
+library(ggplot2)
 
 
 # Load all four datasets
@@ -33,9 +34,84 @@ all_crops %>%
   ) %>%
   print(n = Inf)
 
+
+# Split Coarse grains into individual crops
+cg_split <- all_crops %>%
+  filter(crop_group == "Coarse grains",
+         crop %in% c("Barley", "Oats", "Triticale", "Sorghum"),
+         state == "Australia") %>%
+  mutate(crop_group = crop)  # use crop name as its own group
+
+# Combine with existing data
+all_crops_expanded <- bind_rows(all_crops, cg_split)
+
+# Check new groups
+cat("Crop groups after expansion:", unique(all_crops_expanded$crop_group), "\n")
+
 crops_keep <- c("Wheat", "Barley", "Oats", "Triticale", "Canola", 
                 "Lupins", "Field peas", "Chickpeas", "Lentils", 
                 "Faba beans", "Sorghum")
+
+
+
+
+################################################################################
+### Plot with split of coarse grain
+################################################################################
+crops_keep_expanded <- c("Wheat", "Barley", "Oats", "Triticale", "Sorghum", "Oilseeds", "Pulses")
+
+
+# Set factor order - reversed so Wheat plots at bottom of stack
+crop_order <- c("Triticale", "Pulses", "Oilseeds", "Sorghum", "Oats", "Barley", "Wheat")
+
+all_crops_expanded %>%
+  filter(state == "Australia",
+         crop_group %in% crops_keep_expanded,
+         year >= 1980) %>%
+  group_by(year, crop_group) %>%
+  summarise(area_000ha = sum(area_000ha, na.rm = TRUE), .groups = "drop") %>%
+  mutate(crop_group = factor(crop_group, levels = crop_order)) %>%
+  ggplot(aes(x = year, y = area_000ha, fill = crop_group)) +
+  geom_area(alpha = 0.85, colour = "white", linewidth = 0.2) +
+  scale_fill_manual(
+    values = c(
+      "Wheat"     = "#1a6e8a",
+      "Barley"    = "#2d9e6b",
+      "Oats"      = "#74c2a8",
+      "Sorghum"   = "#1a3a5c",
+      "Oilseeds"  = "#5b9fc9",
+      "Pulses"    = "#a8c8e8",
+      "Triticale" = "#8fbc8f"
+    ),
+    guide = guide_legend(reverse = TRUE)
+  ) +
+  scale_x_continuous(breaks = seq(1980, 2024, by = 5)) +
+  labs(
+    title    = "Australian cropping area by crop group",
+    subtitle = "Source: ABARES Agricultural Commodity Statistics 2024-25",
+    x        = "Year",
+    y        = "Area planted ('000 ha)",
+    fill     = NULL,
+    caption  = "Oilseeds: Canola | Pulses: Lupins, Field peas, Chickpeas, Lentils, Faba beans"
+  ) +
+  theme_bw(base_size = 12) +
+  theme(
+    axis.text.x      = element_text(angle = 45, hjust = 1),
+    legend.position  = "right",
+    panel.grid.minor = element_blank(),
+    plot.caption     = element_text(size = 8, hjust = 0, colour = "grey40")
+  )
+
+
+
+
+################################################################################
+### Plot with NO split of coarse grain
+################################################################################
+names(all_crops)
+distinct(all_crops, crop_group)
+
+
 
 all_crops %>%
   filter(state == "Australia", crop %in% crops_keep, year >= 1980) %>%
@@ -51,12 +127,89 @@ all_crops %>%
   )) +
   scale_x_continuous(breaks = seq(1980, 2024, by = 5)) +
   labs(
-    title    = "Australian cropping area by crop group",
-    subtitle = "Source: ABARES Agricultural Commodity Statistics 2024-25",
-    x        = "Year",
+    # title    = "Australian cropping area by crop group",
+    # subtitle = "Source: ABARES Agricultural Commodity Statistics 2024-25",
+    #x        = "Year",
+    x        = "",
     y        = "Area planted ('000 ha)",
     fill     = NULL,
-    caption  = "Coarse grains: Barley, Oats, Triticale, Sorghum | Oilseeds: Canola | Pulses: Lupins, Field peas, Chickpeas, Lentils, Faba beans"
+    #caption  = "Coarse grains: Barley, Oats, Triticale, Sorghum | Oilseeds: Canola | Pulses: Lupins, Field peas, Chickpeas, Lentils, Faba beans"
+  ) +
+  theme_bw(base_size = 12) +
+  theme(
+    #axis.text.x      = element_text(angle = 45, hjust = 1),
+    #axis.text.x      = "",
+    #legend.position  = "bottom",
+    legend.position  = "",
+    panel.grid.minor = element_blank(),
+    plot.caption     = element_text(size = 8, hjust = 0, colour = "grey40"))
+  
+
+
+
+
+
+
+
+
+
+
+################################################################################
+### Facet by state and including all crop types for coarse grain Free scale
+################################################################################
+
+
+# Rebuild cg_split without the state filter
+cg_split <- all_crops %>%
+  filter(crop_group == "Coarse grains",
+         crop %in% c("Barley", "Oats", "Triticale", "Sorghum")) %>%
+  mutate(crop_group = crop)
+
+# Rebuild all_crops_expanded
+all_crops_expanded <- bind_rows(all_crops, cg_split)
+
+
+### plotting helpers
+
+crop_order_state <- c("Triticale", "Pulses", "Oilseeds", "Sorghum", "Oats", "Barley", "Wheat")
+crops_keep_expanded <- c("Wheat", "Barley", "Oats", "Sorghum", "Oilseeds", "Pulses", "Triticale")
+state_order <- c("WA", "SA", "VIC", "NSW", "QLD")
+
+### Plot
+all_crops_expanded %>%
+  filter(state != "Australia",
+         state != "TAS",
+         crop_group %in% crops_keep_expanded,
+         year >= 1980) %>%
+  group_by(year, crop_group, state) %>%
+  summarise(area_000ha = sum(area_000ha, na.rm = TRUE), .groups = "drop") %>%
+  mutate(
+    crop_group = factor(crop_group, levels = crop_order_state),
+    state      = factor(state, levels = state_order)
+  ) %>%
+  ggplot(aes(x = year, y = area_000ha, fill = crop_group)) +
+  geom_area(alpha = 0.85, colour = "white", linewidth = 0.2) +
+  scale_fill_manual(
+    values = c(
+      "Wheat"     = "#1a6e8a",
+      "Barley"    = "#2d9e6b",
+      "Oats"      = "#74c2a8",
+      "Sorghum"   = "#1a3a5c",
+      "Oilseeds"  = "#5b9fc9",
+      "Pulses"    = "#a8c8e8",
+      "Triticale" = "#8fbc8f"
+    ),
+    guide = guide_legend(reverse = TRUE)
+  ) +
+  scale_x_continuous(breaks = seq(1980, 2024, by = 10)) +
+  facet_wrap(~state, scales = "free_y", ncol = 2) +
+  labs(
+    # title    = "Australian cropping area by crop group and state",
+    # subtitle = "Source: ABARES Agricultural Commodity Statistics 2024-25",
+    x        = "",
+    y        = "Area planted ('000 ha)",
+    fill     = NULL,
+    #caption  = "Oilseeds: Canola | Pulses: Lupins, Field peas, Chickpeas, Lentils, Faba beans"
   ) +
   theme_bw(base_size = 12) +
   theme(
@@ -68,89 +221,52 @@ all_crops %>%
 
 
 
+################################################################################
+### Facet by state and including all crop types for coarse grain NO Free scale
+################################################################################
 
-all_crops %>%
-  filter(state != "Australia", crop %in% crops_keep, year >= 1980) %>%
-  group_by(year, state, crop_group) %>%
+
+### Plot
+  all_crops_expanded %>%
+  filter(state != "Australia",
+         state != "TAS",
+         crop_group %in% crops_keep_expanded,
+         year >= 1980) %>%
+  group_by(year, crop_group, state) %>%
   summarise(area_000ha = sum(area_000ha, na.rm = TRUE), .groups = "drop") %>%
-  ggplot(aes(x = year, y = area_000ha, fill = crop_group)) +
-  geom_area(alpha = 0.85, colour = "white", linewidth = 0.2) +
-  scale_fill_manual(values = c(
-    "Wheat"         = "#1a6e8a",
-    "Coarse grains" = "#2d9e6b",
-    "Oilseeds"      = "#74c2a8",
-    "Pulses"        = "#5b9fc9"
-  )) +
-  scale_x_continuous(breaks = seq(1980, 2024, by = 10)) +
-  facet_wrap(~state, scales = "free_y", ncol = 2) +
-  labs(
-    title    = "Australian cropping area by crop group and state",
-    subtitle = "Source: ABARES Agricultural Commodity Statistics 2024-25",
-    x        = "Year",
-    y        = "Area planted ('000 ha)",
-    fill     = NULL,
-    caption  = "Coarse grains: Barley, Oats, Triticale, Sorghum | Oilseeds: Canola | Pulses: Lupins, Field peas, Chickpeas, Lentils, Faba beans"
-  ) +
-  theme_bw(base_size = 11) +
-  theme(
-    axis.text.x      = element_text(angle = 45, hjust = 1),
-    legend.position  = "right",
-    panel.grid.minor = element_blank(),
-    strip.background = element_rect(fill = "grey90"),
-    plot.caption     = element_text(size = 8, hjust = 0, colour = "grey40")
-  )
-
-
-
-all_crops %>%
-  filter(state != "Australia", crop %in% crops_keep, year >= 1980) %>%
-  group_by(crop_group, state) %>%
-  summarise(
-    n_years    = n_distinct(year),
-    n_missing  = sum(is.na(area_000ha)),
-    first_data = min(year[!is.na(area_000ha)], na.rm = TRUE),
-    .groups = "drop"
+  mutate(
+    crop_group = factor(crop_group, levels = crop_order_state),
+    state      = factor(state, levels = state_order)
   ) %>%
-  arrange(crop_group, state) %>%
-  print(n = Inf)
-
-
-### cleaner version by state
-
-
-state_order <- c("WA", "NSW", "SA", "VIC", "QLD")
-
-all_crops %>%
-  filter(state %in% state_order, crop %in% crops_keep, year >= 1980) %>%
-  mutate(state = factor(state, levels = state_order)) %>%
-  group_by(year, state, crop_group) %>%
-  summarise(area_000ha = sum(area_000ha, na.rm = TRUE), .groups = "drop") %>%
   ggplot(aes(x = year, y = area_000ha, fill = crop_group)) +
   geom_area(alpha = 0.85, colour = "white", linewidth = 0.2) +
-  scale_fill_manual(values = c(
-    "Wheat"         = "#1a6e8a",
-    "Coarse grains" = "#2d9e6b",
-    "Oilseeds"      = "#74c2a8",
-    "Pulses"        = "#5b9fc9"
-  )) +
-  scale_x_continuous(breaks = seq(1980, 2024, by = 10)) +
-  #facet_wrap(~state, scales = "free_y", ncol = 2) +
-  facet_wrap(~state,  ncol = 2) +
+  scale_fill_manual(
+    values = c(
+      "Wheat"     = "#1a6e8a",
+      "Barley"    = "#2d9e6b",
+      "Oats"      = "#74c2a8",
+      "Sorghum"   = "#1a3a5c",
+      "Oilseeds"  = "#5b9fc9",
+      "Pulses"    = "#a8c8e8",
+      "Triticale" = "#8fbc8f"
+    ),
+    guide = guide_legend(reverse = TRUE)
+  ) +
+  scale_x_continuous(breaks = seq(1980, 2024, by = 5)) +
+  facet_wrap(~state, ncol = 2) +
   labs(
     title    = "Australian cropping area by crop group and state",
     subtitle = "Source: ABARES Agricultural Commodity Statistics 2024-25",
     x        = "Year",
     y        = "Area planted ('000 ha)",
     fill     = NULL,
-    caption  = "Coarse grains: Barley, Oats, Triticale, Sorghum | Oilseeds: Canola | Pulses: Lupins, Field peas, Chickpeas, Lentils, Faba beans"
+    caption  = "Oilseeds: Canola | Pulses: Lupins, Field peas, Chickpeas, Lentils, Faba beans"
   ) +
-  theme_bw(base_size = 11) +
+  theme_bw(base_size = 12) +
   theme(
     axis.text.x      = element_text(angle = 45, hjust = 1),
     legend.position  = "right",
     panel.grid.minor = element_blank(),
-    strip.background = element_rect(fill = "grey90"),
     plot.caption     = element_text(size = 8, hjust = 0, colour = "grey40")
   )
-
 
