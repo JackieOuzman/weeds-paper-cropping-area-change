@@ -113,37 +113,37 @@ distinct(all_crops, crop_group)
 
 
 
+crop_order_agg <- c("Pulses", "Oilseeds", "Coarse grains", "Wheat")
+
 all_crops %>%
   filter(state == "Australia", crop %in% crops_keep, year >= 1980) %>%
   group_by(year, crop_group) %>%
   summarise(area_000ha = sum(area_000ha, na.rm = TRUE), .groups = "drop") %>%
+  mutate(crop_group = factor(crop_group, levels = crop_order_agg)) %>%
   ggplot(aes(x = year, y = area_000ha, fill = crop_group)) +
   geom_area(alpha = 0.85, colour = "white", linewidth = 0.2) +
-  scale_fill_manual(values = c(
-    "Wheat"         = "#1a6e8a",
-    "Coarse grains" = "#2d9e6b",
-    "Oilseeds"      = "#74c2a8",
-    "Pulses"        = "#5b9fc9"
-  )) +
+  scale_fill_manual(
+    values = c(
+      "Wheat"         = "#1a6e8a",
+      "Coarse grains" = "#2d9e6b",
+      "Oilseeds"      = "#74c2a8",
+      "Pulses"        = "#5b9fc9"
+    ),
+    guide = guide_legend(reverse = TRUE)
+  ) +
   scale_x_continuous(breaks = seq(1980, 2024, by = 5)) +
   labs(
-    # title    = "Australian cropping area by crop group",
-    # subtitle = "Source: ABARES Agricultural Commodity Statistics 2024-25",
-    #x        = "Year",
-    x        = "",
-    y        = "Area planted ('000 ha)",
-    fill     = NULL,
-    #caption  = "Coarse grains: Barley, Oats, Triticale, Sorghum | Oilseeds: Canola | Pulses: Lupins, Field peas, Chickpeas, Lentils, Faba beans"
+    x    = "",
+    y    = "Area planted ('000 ha)",
+    fill = NULL
   ) +
   theme_bw(base_size = 12) +
   theme(
-    #axis.text.x      = element_text(angle = 45, hjust = 1),
-    #axis.text.x      = "",
-    #legend.position  = "bottom",
-    legend.position  = "",
+    legend.position  = "bottom",
+    #legend.position  = "",
     panel.grid.minor = element_blank(),
-    plot.caption     = element_text(size = 8, hjust = 0, colour = "grey40"))
-  
+    plot.caption     = element_text(size = 8, hjust = 0, colour = "grey40")
+  )
 
 
 
