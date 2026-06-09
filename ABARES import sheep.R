@@ -70,3 +70,12 @@ sheep_crop_wide %>%
     axis.text = element_text(size = 10, colour = "black"),
     plot.caption = element_text(size = 8, hjust = 0)
   )
+
+
+
+write.csv(
+  sheep_crop_wide,
+  "W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/change is cropping type and area Jackie/sheep_crop_wide_for_plot.csv",
+  row.names = FALSE
+)
+

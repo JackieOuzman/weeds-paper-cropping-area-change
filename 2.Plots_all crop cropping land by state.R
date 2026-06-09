@@ -103,6 +103,66 @@ all_crops_expanded %>%
   )
 
 
+################################################################################
+### Plot with split of coarse grain CLEAN
+################################################################################
+
+
+national_all_crops_clean <- all_crops_expanded %>%
+  filter(state == "Australia",
+         crop_group %in% crops_keep_expanded,
+         year >= 1980) %>%
+  group_by(year, crop_group) %>%
+  summarise(area_000ha = sum(area_000ha, na.rm = TRUE), .groups = "drop") %>%
+  mutate(crop_group = factor(crop_group, levels = crop_order)) %>%
+  ggplot(aes(x = year, y = area_000ha, fill = crop_group)) +
+  geom_area(alpha = 0.85, colour = "white", linewidth = 0.2) +
+  scale_fill_manual(
+    values = c(
+      "Wheat"     = "#1a6e8a",
+      "Barley"    = "#2d9e6b",
+      "Oats"      = "#74c2a8",
+      "Sorghum"   = "#1a3a5c",
+      "Oilseeds"  = "#5b9fc9",
+      "Pulses"    = "#a8c8e8",
+      "Triticale" = "#8fbc8f"
+    ),
+    guide = guide_legend(reverse = TRUE)
+  ) +
+  scale_x_continuous(breaks = c(seq(1980, 2020, by = 5), 2024)) +
+  labs(
+    #subtitle = "Source: ABARES Agricultural Commodity Statistics 2024-25",
+    x        = "Year",
+    y        = "Area planted ('000 ha)",
+    fill     = NULL
+  ) +
+  theme_bw(base_size = 12) +
+  theme(
+    axis.text.x      = element_text(angle = 45, hjust = 1),
+    legend.position  = "right",
+    panel.grid.minor = element_blank()
+  )
+
+
+national_all_crops_clean
+
+ggsave(
+  filename = "W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/change is cropping type and area Jackie/cropping_area_by_group.png",
+  plot     = national_all_crops_clean,
+  width    = 180,
+  height   = 120,
+  units    = "mm",
+  dpi      = 300#,
+  #compression = "lzip"
+)
+
+write.csv(
+  all_crops_expanded,
+  "W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/change is cropping type and area Jackie/all_crops_expanded_for_plot.csv",
+  row.names = FALSE
+)
+
+
 
 
 ################################################################################
