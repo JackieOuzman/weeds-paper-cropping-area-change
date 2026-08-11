@@ -28,7 +28,7 @@ sheep_crop <- nat_est %>%
   )
 
 sheep_crop_wide <- sheep_crop %>%
-  select(-RSE) %>%
+  dplyr::select(-RSE) %>%
   pivot_wider(names_from = Variable, values_from = Value) %>%
   mutate(sheep_per_crop_ha = `Sheep flock at 30 June (no.)` / `Total area cropped (ha)`)
 
@@ -79,3 +79,32 @@ write.csv(
   row.names = FALSE
 )
 
+p7 <- sheep_crop_wide %>%
+  filter(Year >= 1990 & Year <= 2021) %>%
+  ggplot(aes(x = Year, y = sheep_per_crop_ha)) +
+  geom_line(linewidth = 1.2, colour = "#003A5D") +
+  scale_x_continuous(breaks = seq(1990, 2021, by = 5)) +
+  labs(
+    title = "Sheep per cropped hectare",
+    x = NULL,
+    y = "Sheep per cropped ha",
+    caption = "Source: ABARES Farm Data Portal — Historical National Estimates (2025)"
+  ) +
+  theme_classic(base_size = 13) +
+  theme(
+    axis.title = element_text(size = 12),
+    axis.text = element_text(size = 10, colour = "black"),
+    plot.caption = element_text(size = 8, hjust = 0)
+  )
+
+p7
+
+
+ggsave(
+  filename = "W:/Economic impact of weeds round 2/Reports and papers/AWC_2026/sheep decline.png",
+  plot = p7,
+  width = 8,
+  height = 6.5,
+  dpi = 300,
+  bg = "white"
+)
