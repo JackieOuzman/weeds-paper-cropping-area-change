@@ -128,3 +128,72 @@ ggsave(
   dpi = 300,
   bg = "white"
 )
+
+
+
+################################################################################
+drivers_long2 <- drivers_data %>%
+  mutate(remaining_pct = 1 - cultivation_pct - herbicides_pct) %>%
+  select(study, year, cultivation_pct, herbicides_pct, remaining_pct) %>%
+  pivot_longer(
+    cols = c(cultivation_pct, herbicides_pct, remaining_pct),
+    names_to = "component",
+    values_to = "pct"
+  ) %>%
+  mutate(
+    component = recode(component,
+                       cultivation_pct = "Cultivation",
+                       herbicides_pct  = "Herbicides",
+                       remaining_pct   = "IWM"
+    ),
+    component = factor(component, levels = c("Cultivation", "Herbicides", "IWM")),
+    study = factor(study, levels = drivers_data$study)
+  ) %>%
+  group_by(study) %>%
+  arrange(component, .by_group = TRUE) %>%
+  mutate(
+    ymax = cumsum(pct),
+    ymin = ymax - pct,
+    label_y = ifelse(pct < 0.05, ymax + 0.03, (ymin + ymax) / 2),
+    label_color = ifelse(pct < 0.05, "dark", "white")
+  ) %>%
+  ungroup()
+
+print(drivers_long2)
+
+
+p5 <- ggplot(drivers_long2, aes(x = study, y = pct, fill = component, color = component)) +
+  geom_col(width = 0.6, linewidth = 0.6, position = position_stack(reverse = TRUE)) +
+  geom_text(
+    data = filter(drivers_long2, component != "IWM"),
+    aes(y = label_y, label = scales::percent(pct, accuracy = 1),
+        color = NULL),
+    color = ifelse(filter(drivers_long2, component != "IWM")$label_color == "white", "white", "grey20"),
+    size = 4,
+    fontface = "bold"
+  ) +
+  scale_x_discrete(labels = c(
+    "Combellack\n1981–82", "Jones\n1998–99", "Llewellyn\n2011–13", "Ouzman\n2019–21"
+  )) + 
+  scale_y_continuous(labels = scales::percent, expand = expansion(mult = c(0, 0.05))) +
+  scale_fill_manual(values = c("Cultivation" = "#8DC63F", "Herbicides" = "#003A5D", "IWM" = "grey92")) +
+  scale_color_manual(values = c("Cultivation" = "#8DC63F", "Herbicides" = "#003A5D", "IWM" = "grey70")) +
+  guides(color = "none") +
+  labs(
+    x = NULL, y = "Share of total expenditure", fill = NULL,
+    title = "Cultivation vs herbicide expenditure"
+  ) +
+  theme_minimal(base_size = 13) +
+  theme(legend.position = "top", panel.grid.major.x = element_blank())
+
+p5
+
+
+ggsave(
+  filename = "W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/cultivation_vs_herbicide_expenditure.png",
+  plot = p5,
+  width = 8,
+  height = 5.5,
+  dpi = 300,
+  bg = "white"
+)

@@ -222,3 +222,30 @@ ggsave(
   dpi = 300,
   bg = "white"
 )
+
+
+p <- p + scale_x_discrete(labels = c(
+  "Combellack\n1981–82",
+  "Jones\n1998–99",
+  "Sinden\n2001–02",
+  "Llewellyn\n2011–13",
+  "Hafi\n2020–21",
+  "Ouzman\n2019–21"
+))
+
+p
+library(stringr)
+p + scale_x_discrete(labels = function(x) str_wrap(x, width = 12)) +
+  theme(axis.text.x = element_text(size = 11))
+
+p
+
+ggsave(
+  filename = "W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/revenue_loss_vs_expenditure_1987-2025.png",
+  plot = p,
+  width = 8,
+  height = 5.5,
+  dpi = 300,
+  bg = "white"
+)
+
