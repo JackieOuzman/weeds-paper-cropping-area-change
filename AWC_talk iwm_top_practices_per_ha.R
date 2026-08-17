@@ -79,7 +79,7 @@ iwm_top6 <- iwm_grouped_ha %>%
 
 p9a <- ggplot(iwm_top6, aes(x = group, y = per_ha)) +
   geom_col(fill = "#003A5D", width = 0.6) +
-  geom_text(aes(label = paste0("$", round(per_ha, 2), "/ha")),
+  geom_text(aes(label = paste0("$", round(per_ha, 2))),
             hjust = -0.05, size = 4, fontface = "bold") +
   coord_flip() +
   #scale_y_continuous(limits = c(0, 25), expand = expansion(mult = c(0, 0.05))) +
@@ -99,7 +99,7 @@ p9a
 ggsave(
   filename = "W:/Economic impact of weeds round 2/Reports and papers/AWC_2026/iwm_top_practices_per_ha.png",
   plot = p9a,
-  width = 12,
+  width = 15,
   height = 5.5,
   dpi = 300,
   bg = "white"
