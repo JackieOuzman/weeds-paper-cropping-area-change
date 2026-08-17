@@ -36,15 +36,15 @@ comparison_data <- data.frame(
 p4 <- ggplot(comparison_data, aes(x = reorder(category, value), y = value, fill = type)) +
   geom_col(width = 0.6) +
   geom_text(aes(label = scales::dollar(value, accuracy = 0.01)), vjust = -0.5, 
-            size = 4, fontface = "bold", color = "#003A5D") +
+            size = 6, fontface = "bold", color = "#003A5D") +
   scale_fill_manual(values = c("Revenue loss" = "#00A9CE", "Treatment cost" = "#003A5D")) +
   scale_y_continuous(labels = scales::dollar, expand = expansion(mult = c(0, 0.15))) +
   labs(x = NULL, y = "$/ha", fill = NULL,
        title = "Revenue lost to weeds is lower than the cost of a single herbicide treatment",
        caption = "Treatment costs include chemical + application, 2025 values") +
-  theme_minimal(base_size = 13) +
+  theme_minimal(base_size = 16) +
   theme(legend.position = "top", panel.grid.major.x = element_blank(),
-        plot.caption = element_text(size = 9, color = "grey40", hjust = 0))
+        plot.caption = element_text(size = 12, color = "grey40", hjust = 0))
 
 p4
 

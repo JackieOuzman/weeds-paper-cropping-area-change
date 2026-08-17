@@ -60,15 +60,15 @@ sheep_crop_wide %>%
   #geom_point(size = 2, colour = "black") +
   scale_x_continuous(breaks = seq(1990, 2021, by = 5)) +
   labs(
-    x = "Year",
+    x = NULL,
     y = "Sheep per cropped hectare",
     caption = "Source: ABARES Farm Data Portal — Historical National Estimates (2025)"
   ) +
-  theme_classic(base_size = 12) +
+  theme_classic(base_size = 16) +
   theme(
-    axis.title = element_text(size = 12),
-    axis.text = element_text(size = 10, colour = "black"),
-    plot.caption = element_text(size = 8, hjust = 0)
+    axis.title = element_text(size = 16),
+    axis.text = element_text(size = 16, colour = "black"),
+    plot.caption = element_text(size = 12, hjust = 0)
   )
 
 
@@ -90,11 +90,11 @@ p7 <- sheep_crop_wide %>%
     y = "Sheep per cropped ha",
     caption = "Source: ABARES Farm Data Portal — Historical National Estimates (2025)"
   ) +
-  theme_classic(base_size = 13) +
+  theme_classic(base_size = 16) +
   theme(
-    axis.title = element_text(size = 12),
-    axis.text = element_text(size = 10, colour = "black"),
-    plot.caption = element_text(size = 8, hjust = 0)
+    axis.title = element_text(size = 16),
+    axis.text = element_text(size = 16, colour = "black"),
+    plot.caption = element_text(size = 12, hjust = 0)
   )
 
 p7

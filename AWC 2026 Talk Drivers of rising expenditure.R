@@ -100,7 +100,7 @@ p5 <- ggplot(drivers_long2, aes(x = study, y = pct, fill = component, color = co
     aes(y = label_y, label = scales::percent(pct, accuracy = 1),
         color = NULL),
     color = ifelse(filter(drivers_long2, component != "Remaining")$label_color == "white", "white", "grey20"),
-    size = 4,
+    size = 6,
     fontface = "bold"
   ) +
   scale_x_discrete(labels = c(
@@ -114,7 +114,7 @@ p5 <- ggplot(drivers_long2, aes(x = study, y = pct, fill = component, color = co
     x = NULL, y = "Share of total expenditure", fill = NULL,
     title = "Cultivation vs herbicide expenditure"
   ) +
-  theme_minimal(base_size = 13) +
+  theme_minimal(base_size = 16) +
   theme(legend.position = "top", panel.grid.major.x = element_blank())
 
 p5
@@ -162,7 +162,7 @@ drivers_long2 <- drivers_data %>%
 print(drivers_long2)
 
 
-p5 <- ggplot(drivers_long2, aes(x = study, y = pct, fill = component, color = component)) +
+p5a <- ggplot(drivers_long2, aes(x = study, y = pct, fill = component, color = component)) +
   geom_col(width = 0.6, linewidth = 0.6, position = position_stack(reverse = TRUE)) +
   geom_text(
     data = filter(drivers_long2, component != "IWM"),
@@ -186,12 +186,12 @@ p5 <- ggplot(drivers_long2, aes(x = study, y = pct, fill = component, color = co
   theme_minimal(base_size = 13) +
   theme(legend.position = "top", panel.grid.major.x = element_blank())
 
-p5
+p5a
 
 
 ggsave(
   filename = "W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/cultivation_vs_herbicide_expenditure.png",
-  plot = p5,
+  plot = p5a,
   width = 8,
   height = 5.5,
   dpi = 300,

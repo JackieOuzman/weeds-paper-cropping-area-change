@@ -91,12 +91,12 @@ p8 <- ggplot(df_national_summary, aes(x = period, y = mean, fill = period)) +
     title = "Rainfall is shifting outside the growing season",
     caption = "Error bars represent ±1 SE. Data source: SILO gridded climate dataset."
   ) +
-  theme_classic(base_size = 13) +
+  theme_classic(base_size = 16) +
   theme(
     legend.position = "none",
     plot.margin = margin(t = 10, r = 10, b = 10, l = 15),
     axis.title.y = element_text(margin = margin(r = 10)),
-    plot.caption = element_text(size = 9, color = "grey40", hjust = 0)
+    plot.caption = element_text(size = 10, color = "grey40", hjust = 0)
   )
 
 p8

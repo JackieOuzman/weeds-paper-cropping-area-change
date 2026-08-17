@@ -41,7 +41,7 @@ p6 <- ggplot(adoption_curve_trimmed, aes(x = year, y = pct_adopted)) +
     x = NULL, y = "Farmers who have adopted no-till",
     title = "No-till adoption, national"
   ) +
-  theme_minimal(base_size = 13) +
+  theme_minimal(base_size = 16) +
   theme(panel.grid.minor = element_blank())
 
 p6

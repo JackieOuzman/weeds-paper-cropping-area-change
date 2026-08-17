@@ -201,7 +201,7 @@ p <- p +
     data = totals_label,
     aes(x = study, y = 1.05, label = label),
     inherit.aes = FALSE,
-    size = 3.8,
+    size = 4.5,
     color = "grey30"
   ) +
   scale_y_continuous(labels = scales::percent, expand = expansion(mult = c(0, 0.08)))
@@ -235,8 +235,8 @@ p <- p + scale_x_discrete(labels = c(
 
 p
 library(stringr)
-p + scale_x_discrete(labels = function(x) str_wrap(x, width = 12)) +
-  theme(axis.text.x = element_text(size = 11))
+p + scale_x_discrete(labels = function(x) str_wrap(x, width = 14)) +
+  theme(axis.text.x = element_text(size = 14))
 
 p
 

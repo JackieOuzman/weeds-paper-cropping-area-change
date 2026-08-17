@@ -77,23 +77,29 @@ iwm_top6 <- iwm_grouped_ha %>%
                       "HWSC (all practices)")) %>%
   mutate(group = factor(group, levels = group[order(per_ha)]))
 
-p9 <- ggplot(iwm_top6, aes(x = group, y = per_ha)) +
+p9a <- ggplot(iwm_top6, aes(x = group, y = per_ha)) +
   geom_col(fill = "#003A5D", width = 0.6) +
   geom_text(aes(label = paste0("$", round(per_ha, 2), "/ha")),
             hjust = -0.05, size = 4, fontface = "bold") +
   coord_flip() +
-  scale_y_continuous(limits = c(0, 25), expand = expansion(mult = c(0, 0.05))) +
-  labs(x = NULL, y = "IWM expenditure ($/ha)",
+  #scale_y_continuous(limits = c(0, 25), expand = expansion(mult = c(0, 0.05))) +
+  labs(x = NULL, 
+       y = NULL,
        title = "Integrated weed management: top practices by cost per hectare") +
-  theme_minimal(base_size = 13) +
-  theme(panel.grid.major.y = element_blank(), axis.text.y = element_text(size = 11))
+  theme_minimal(base_size = 16) +
+  theme(panel.grid.major.y = element_blank(),
+  axis.text.y = element_text(size = 14),
+  axis.text.x = element_blank(),      # drops the numbers
+  axis.ticks.x = element_blank(),     # drops the tick marks
+  panel.grid.major.x = element_blank() # drops the vertical gridlines
+)
 
-p9
+p9a
 
 ggsave(
   filename = "W:/Economic impact of weeds round 2/Reports and papers/AWC_2026/iwm_top_practices_per_ha.png",
-  plot = p9,
-  width = 8,
+  plot = p9a,
+  width = 12,
   height = 5.5,
   dpi = 300,
   bg = "white"

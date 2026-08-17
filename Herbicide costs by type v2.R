@@ -81,10 +81,10 @@ p_pct_grouped <- ggplot(costs_pct_grouped,
   ) +
   labs(x = NULL, y = "Share of total herbicide cost (%)", fill = NULL,
        title = "Herbicide use has shifted toward pre-emergent control") +
-  theme_classic(base_size = 12) +
+  theme_classic(base_size = 16) +
   theme(
     strip.background = element_blank(),
-    strip.text = element_text(face = "bold", size = 12),
+    strip.text = element_text(face = "bold", size = 16),
     legend.position = "bottom",
     panel.spacing = unit(1.2, "lines")
   )
@@ -95,7 +95,7 @@ p_pct_grouped
 ggsave(
   filename = "W:/Economic impact of weeds round 2/Reports and papers/AWC_2026/herbicide_shift_pre_seeding_pre_post.png",
   plot = p_pct_grouped,
-  width = 8.5,
+  width = 10,
   height = 5.5,
   dpi = 300,
   bg = "white"
