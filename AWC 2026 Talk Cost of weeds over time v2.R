@@ -111,12 +111,12 @@ checkplot_data_adj_long_1_and_2
 ################################################################################
 
 labels_study_yr <- c(
-  "Combellack\n1987",
-  "Jones\n2005",
-  "Sinden\n2004",
-  "Llewellyn\n2016",
-  "Hafi\n2023",
-  "Ouzman\n2025"
+  "Combellack\n1981–82",
+  "Jones\n1998–99",
+  "Sinden\n2001–02",
+  "Llewellyn\n2011–13",
+  "Hafi\n2020–21",
+  "Ouzman\n2019–21"
 )
 
 p1 <- ggplot(checkplot_data_adj_long_1_and_2, aes(x = study, y = pct, fill = component)) +
