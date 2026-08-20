@@ -57,3 +57,36 @@ ggsave(
   dpi = 300,
   bg = "white"
 )
+
+
+comparison_data1 <- data.frame(
+  category = c("Revenue loss", "Knockdown\nherbicide", 
+               "Pre-emergent\nherbicide", "Post-emergent\nherbicide"),
+  value = c(26, 31.79, 35.41, 29.90),
+  type = c("Revenue loss", "Treatment cost", "Treatment cost", "Treatment cost")
+)
+
+p4a <- ggplot(comparison_data1, aes(x = reorder(category, value), y = value, fill = type)) +
+  geom_col(width = 0.6) +
+  geom_text(aes(label = scales::dollar(value, accuracy = 0.01)), vjust = -0.5, 
+            size = 6, fontface = "bold", color = "#003A5D") +
+  scale_fill_manual(values = c("Revenue loss" = "#00A9CE", "Treatment cost" = "#003A5D")) +
+  scale_y_continuous(labels = scales::dollar, expand = expansion(mult = c(0, 0.15))) +
+  labs(x = NULL, y = "$/ha", fill = NULL,
+       title = "Revenue lost to weeds is lower than the cost of a single herbicide treatment",
+       caption = "Treatment costs include chemical + application, 2025 values \nRevenue loss from incrop weeds") +
+  theme_minimal(base_size = 16) +
+  theme(legend.position = "top", panel.grid.major.x = element_blank(),
+        plot.caption = element_text(size = 12, color = "grey40", hjust = 0))
+
+p4a
+
+
+ggsave(
+  filename = "W:/Economic impact of weeds round 2/Reports and papers/AWC_2026/revenue_loss_vs_herbicide_treatment_costa.png",
+  plot = p4a,
+  width = 8,
+  height = 5.5,
+  dpi = 300,
+  bg = "white"
+)
