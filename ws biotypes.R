@@ -179,3 +179,41 @@ ggplot(hr_by_class, aes(x = year, y = cumulative_cases, colour = herbicide_class
 
 
 
+#########################################################################
+### Slide 7 add-on: Australia only, ALS + Glycines (glyphosate) ###
+#########################################################################
+
+hr_au_2class <- hr_by_class %>%
+  filter(country == "Australia",
+         herbicide_class %in% c("ALS inhibitors", "Glycines (glyphosate)"))
+
+hr_au_2class_labels <- hr_au_2class %>%
+  group_by(herbicide_class) %>%
+  filter(year == max(year)) %>%
+  ungroup()
+
+Plot_au_ALS_glycines <- ggplot(hr_au_2class, aes(x = year, y = cumulative_cases, colour = herbicide_class)) +
+  geom_line(linewidth = 1.2) +
+  geom_point(size = 1.8) +
+  annotate("text", x = 1981, y = 27, label = "ALS inhibitors",
+           colour = class_colours["ALS inhibitors"], fontface = "bold", size = 4.5, hjust = 0) +
+  annotate("text", x = 1981, y = 24, label = "Glycines (glyphosate)",
+           colour = class_colours["Glycines (glyphosate)"], fontface = "bold", size = 4.5, hjust = 0) +
+  scale_colour_manual(values = class_colours) +
+  scale_x_continuous(breaks = seq(1980, 2020, by = 10)) +
+  labs(
+    title = NULL,
+    x = NULL,
+    y = "Cumulative\nresistant cases",
+    caption = str_wrap(
+      "Source: International Herbicide-Resistant Weed Database (weedscience.org, accessed Aug 2026)",
+      width = 45
+    )
+  ) +
+  theme_minimal(base_size = 16) +
+  theme(
+    legend.position = "none",
+    plot.caption = element_text(hjust = 0, size = 9, colour = "grey40")
+  )
+
+Plot_au_ALS_glycines
