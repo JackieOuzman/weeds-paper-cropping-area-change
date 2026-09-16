@@ -51,7 +51,7 @@ curves <- bind_rows(notill, agro)
 max(curves$year)
 p <- ggplot(curves, aes(x = year, y = pct, linetype = practice)) +
   geom_line(linewidth = 1.1) +                          # thicker lines
-  facet_wrap(~ region, ncol = 2) +                      # 2 columns = 2 rows
+  facet_wrap(~ region, ncol = 3) +                      # 2 columns = 2 rows
   scale_linetype_manual(
     values = c("No-till" = "dotted", "Paid agronomist" = "solid"),
     name = NULL
@@ -63,13 +63,13 @@ p <- ggplot(curves, aes(x = year, y = pct, linetype = practice)) +
     y = "Percentage of farmers",
     #caption = "Figure 4. Percentage of farmers who have used no-till (dotted line) and use a paid agronomist\n(solid line) by region. Southern region combines SA and VIC."
   ) +
-  theme_bw(base_size = 14) +
+  theme_bw(base_size = 16) +
   theme(
     strip.background  = element_rect(fill = "white", colour = "black"),
     strip.text        = element_text(size = 10),
     panel.grid.minor  = element_blank(),
     #legend.position   = c(0.75, 0.25),                  # inside bottom-right panel (Southern)
-    legend.position   = "none",                  # inside bottom-right panel (Southern)
+    legend.position   = "bottom",                  # inside bottom-right panel (Southern)
     legend.justification = c(0, 1),                     # anchor top-left of legend box
     legend.background = element_rect(fill = "white", colour = NA),
     legend.key        = element_blank(),
@@ -78,5 +78,5 @@ p <- ggplot(curves, aes(x = year, y = pct, linetype = practice)) +
 
 p
 
-ggsave("W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/adoption_curve/ago_adoption_curves_regional.png", plot = p,
-       width = 9, height = 4, dpi = 300, bg = "white")
+ggsave("W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/adoption_curve/ago_adoption_curves_regionalV2.png", plot = p,
+       width = 10, height = 3.5, dpi = 300, bg = "white")
