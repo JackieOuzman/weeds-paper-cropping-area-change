@@ -271,14 +271,17 @@ all_crops_expanded %>%
     fill     = NULL,
     #caption  = "Oilseeds: Canola | Pulses: Lupins, Field peas, Chickpeas, Lentils, Faba beans"
   ) +
-  theme_bw(base_size = 12) +
+  theme_bw(base_size = 16) +
   theme(
-    axis.text.x      = element_text(angle = 45, hjust = 1),
+    axis.text.x      = element_text(angle = 45, hjust = 1, size = 13),
+    axis.text.y      = element_text(size = 13),
+    axis.title.y     = element_text(size = 15),
+    strip.text       = element_text(size = 14, face = "bold"),
+    legend.text      = element_text(size = 13),
     legend.position  = "right",
     panel.grid.minor = element_blank(),
     plot.caption     = element_text(size = 8, hjust = 0, colour = "grey40")
   )
-
 
 
 ################################################################################
@@ -322,9 +325,13 @@ all_crops_expanded %>%
     fill     = NULL,
     caption  = "Oilseeds: Canola | Pulses: Lupins, Field peas, Chickpeas, Lentils, Faba beans"
   ) +
-  theme_bw(base_size = 12) +
+  theme_bw(base_size = 16) +
   theme(
-    axis.text.x      = element_text(angle = 45, hjust = 1),
+    axis.text.x      = element_text(angle = 45, hjust = 1, size = 13),
+    axis.text.y      = element_text(size = 13),
+    axis.title.y     = element_text(size = 15),
+    strip.text       = element_text(size = 14, face = "bold"),
+    legend.text      = element_text(size = 13),
     legend.position  = "right",
     panel.grid.minor = element_blank(),
     plot.caption     = element_text(size = 8, hjust = 0, colour = "grey40")

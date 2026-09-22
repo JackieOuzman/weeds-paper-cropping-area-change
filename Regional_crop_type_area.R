@@ -74,14 +74,17 @@ ggplot(region_summary, aes(x = year, y = area_000ha, fill = crop_group)) +
     y    = "Area planted ('000 ha)",
     fill = NULL
   ) +
-  theme_bw(base_size = 12) +
+  theme_bw(base_size = 16) +
   theme(
-    axis.text.x      = element_text(angle = 45, hjust = 1),
+    axis.text.x      = element_text(angle = 45, hjust = 1, size = 13),
+    axis.text.y      = element_text(size = 13),
+    axis.title.y     = element_text(size = 15),
     legend.position  = c(0.58, 0.25),
     legend.justification = c(0, 0.5),
+    legend.text      = element_text(size = 13),
     panel.grid       = element_blank(),
     strip.background = element_rect(fill = "grey90"),
-    strip.text       = element_text(face = "bold")
+    strip.text       = element_text(face = "bold", size = 14)
   ) +
   guides(fill = guide_legend(reverse = TRUE, ncol = 2))
 

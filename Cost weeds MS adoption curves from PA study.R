@@ -66,11 +66,10 @@ p <- ggplot(curves, aes(x = year, y = pct, linetype = practice)) +
   theme_bw(base_size = 16) +
   theme(
     strip.background  = element_rect(fill = "white", colour = "black"),
-    strip.text        = element_text(size = 10),
+    strip.text        = element_text(size = 14),
     panel.grid.minor  = element_blank(),
-    #legend.position   = c(0.75, 0.25),                  # inside bottom-right panel (Southern)
-    legend.position   = "bottom",                  # inside bottom-right panel (Southern)
-    legend.justification = c(0, 1),                     # anchor top-left of legend box
+    legend.position   = "bottom",
+    legend.justification = c(0, 1),
     legend.background = element_rect(fill = "white", colour = NA),
     legend.key        = element_blank(),
     plot.caption      = element_text(hjust = 0, size = 9)
@@ -80,3 +79,6 @@ p
 
 ggsave("W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/adoption_curve/ago_adoption_curves_regionalV2.png", plot = p,
        width = 10, height = 3.5, dpi = 300, bg = "white")
+
+ggsave("W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/adoption_curve/ago_adoption_curves_regionalV2_dpi600.png", plot = p,
+       width = 10, height = 3.5, dpi = 600, bg = "white")
