@@ -142,7 +142,7 @@ p_B_adj <- ggplot(plot_data_B_long_adj, aes(x = study, y = value_adj, fill = com
     fill = NULL,
     title = "Residual weeds vs contamination"
   ) +
-  theme_minimal(base_size = 14) +
+  theme_minimal(base_size = 16) +
   theme(
     legend.position = "top",
     panel.grid.major.x = element_blank()

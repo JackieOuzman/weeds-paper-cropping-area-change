@@ -109,3 +109,38 @@ ggsave(
   dpi = 300,
   bg = "white"
 )
+
+
+# ---- Manuscript version (Figure 9) ---------------------------
+
+p_pct_grouped_ms <- ggplot(costs_pct_grouped,
+                           aes(x = year, y = pct, fill = cost_type)) +
+  geom_col(position = "stack", width = 0.6, colour = "white", linewidth = 0.3) +
+  facet_wrap(~ herb_group, nrow = 1) +
+  scale_fill_manual(values = c("Herbicide" = "#4E79A7", "Application" = "#A0CBE8"),
+                    labels = c("Herbicide" = "Chemical", "Application" = "Application")) +
+  scale_x_discrete(labels = c("2016" = "2011–13", "2025" = "2019–21"),
+                   expand = expansion(add = 0.6)) +
+  scale_y_continuous(
+    labels = label_percent(scale = 1, accuracy = 1),
+    expand = expansion(mult = c(0, 0.05))
+  ) +
+  labs(x = NULL, y = "Share of total herbicide cost", fill = NULL) +
+  theme_classic(base_size = 16) +
+  theme(
+    strip.background = element_blank(),
+    strip.text = element_text(face = "bold", size = 16),
+    legend.position = "bottom",
+    panel.spacing = unit(1.2, "lines")
+  )
+
+p_pct_grouped_ms
+
+ggsave(
+  filename = "W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/herbicide_shift_pre_seeding_pre_post.png",
+  plot = p_pct_grouped_ms,
+  width = 8.5,
+  height = 5.5,
+  dpi = 300,
+  bg = "white"
+)

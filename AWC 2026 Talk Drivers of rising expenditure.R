@@ -96,9 +96,20 @@ build_expenditure_plot <- function(data, base_size, label_size) {
   ggplot(data, aes(x = study, y = pct, fill = component, color = component)) +
     geom_col(width = 0.6, linewidth = 0.6, position = position_stack(reverse = TRUE)) +
     geom_text(
-      data = filter(data, component != "IWM"),
-      aes(y = label_y, label = scales::percent(pct, accuracy = 1), color = NULL),
-      color = ifelse(filter(data, component != "IWM")$label_color == "white", "white", "grey20"),
+      aes(
+        y = label_y,
+        label = case_when(
+          pct < 0.005 ~ "",
+          component == "Cultivation" & study %in% tail(levels(study), 2) ~ "",
+          TRUE ~ scales::percent(pct, accuracy = 1)
+        ),
+        color = NULL
+      ),
+      color = case_when(
+        data$component == "IWM"       ~ "grey20",
+        data$label_color == "white"   ~ "white",
+        TRUE                          ~ "black"
+      ),
       size = label_size,
       fontface = "bold"
     ) +
@@ -115,7 +126,7 @@ build_expenditure_plot <- function(data, base_size, label_size) {
 
 # ---- 3. Manuscript version (smaller font) --------------------
 
-p_ms <- build_expenditure_plot(drivers_long, base_size = 13, label_size = 4)
+p_ms <- build_expenditure_plot(drivers_long, base_size = 14, label_size = 4)
 p_ms
 
 ggsave(
