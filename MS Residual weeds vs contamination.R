@@ -168,7 +168,7 @@ ggsave(
 
 # High-resolution PNG for the Word draft
 ggsave(
-  filename = "W:/Economic impact of weeds round 2/Reports and papers/Figure_for_ Journal_Paper/Draft Journal Paper/Fig7_residual_weeds_vs_grain_cleaning.png",
+  filename = "W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/Figure_for_ Journal_Paper/Fig7_residual_weeds_vs_grain_cleaning.png",
   plot = p_B_adj,
   width = 140, height = 90, units = "mm",
   dpi = 600, bg = "white"
