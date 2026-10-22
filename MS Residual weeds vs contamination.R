@@ -10,6 +10,19 @@ library(tidyr)
 library(ggplot2)
 library(stringr)
 
+# Shared journal figure theme (Arial, final-size text, same look on every figure)   # CHANGED (new)
+theme_ms <- function(base_size = 10) {
+  theme_minimal(base_size = base_size, base_family = "Arial") +
+    theme(
+      legend.position    = "top",
+      legend.title       = element_blank(),
+      panel.grid.major.x = element_blank(),
+      panel.grid.minor   = element_blank(),
+      axis.text          = element_text(colour = "black"),
+      plot.margin        = margin(5, 8, 5, 5)
+    )
+}
+
 file_path <- "W:/Economic impact of weeds round 2/model/4.compare older model studies/timeseries_approach.xlsx"
 
 # Study/year headers + unadjusted revenue-loss subcategories
@@ -74,12 +87,11 @@ p_B <- ggplot(plot_data_B_long, aes(x = study, y = pct, fill = component)) +
     fontface = "bold"
   ) +
   scale_y_continuous(labels = scales::percent) +
-  scale_fill_manual(values = c("Residual weeds" = "#003A5D", "Contamination" = "#8DC63F")) +
+  scale_fill_manual(values = c("Residual weeds" = "#003A5D", "Grain cleaning" = "#8DC63F")) +   # CHANGED
   labs(
     x = NULL,
-    y = "Share of unadjusted revenue loss",
-    fill = NULL,
-    title = "Residual weeds vs contamination share of revenue loss"
+    y = "Adjusted revenue loss\n(2019–20 $)",
+    fill = NULL                                                      # CHANGED: title removed
   ) +
   theme_minimal(base_size = 14) +
   theme(
@@ -119,7 +131,7 @@ plot_data_B_long_adj <- plot_data_B %>%
   mutate(
     component = recode(component,
                        residual_weeds_adj = "Residual weeds",
-                       contamination_adj  = "Contamination"
+                       contamination_adj  = "Grain cleaning"   # CHANGED
     ),
     study = factor(study, levels = unique(study))
   )
@@ -135,26 +147,29 @@ p_B_adj <- ggplot(plot_data_B_long_adj, aes(x = study, y = value_adj, fill = com
     "Llewellyn\n2011–13",
     "Ouzman\n2019–21"
   )) +
-  scale_fill_manual(values = c("Residual weeds" = "#003A5D", "Contamination" = "#8DC63F")) +
+  scale_fill_manual(values = c("Residual weeds" = "#003A5D", "Grain cleaning" = "#8DC63F")) +   # CHANGED
   labs(
     x = NULL,
     y = "Adjusted revenue loss\n(2019–20 $)",
     fill = NULL,
-    title = "Residual weeds vs contamination"
+    title = NULL   # CHANGED
   ) +
-  theme_minimal(base_size = 16) +
-  theme(
-    legend.position = "top",
-    panel.grid.major.x = element_blank()
-  )
+  theme_ms(base_size = 10)   # CHANGED
 
 p_B_adj
 
+# Journal version: vector PDF with embedded fonts
 ggsave(
-  filename = "W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/residual_weeds_vs_contamination_adjusted.png",
+  filename = "W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/Figure_for_ Journal_Paper/Fig7_residual_weeds_vs_grain_cleaning.pdf",
   plot = p_B_adj,
-  width = 8,
-  height = 5.5,
-  dpi = 300,
-  bg = "white"
+  width = 140, height = 90, units = "mm",
+  device = cairo_pdf
+)
+
+# High-resolution PNG for the Word draft
+ggsave(
+  filename = "W:/Economic impact of weeds round 2/Reports and papers/Figure_for_ Journal_Paper/Draft Journal Paper/Fig7_residual_weeds_vs_grain_cleaning.png",
+  plot = p_B_adj,
+  width = 140, height = 90, units = "mm",
+  dpi = 600, bg = "white"
 )
