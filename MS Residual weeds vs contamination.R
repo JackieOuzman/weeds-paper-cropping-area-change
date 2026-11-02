@@ -145,7 +145,7 @@ p_B_adj <- ggplot(plot_data_B_long_adj, aes(x = study, y = value_adj, fill = com
     "Combellack\n1981–82",
     "Jones\n1998–99",
     "Llewellyn\n2011–13",
-    "Ouzman\n2019–21"
+    "Ouzman\n2018–21"
   )) +
   scale_fill_manual(values = c("Residual weeds" = "#003A5D", "Grain cleaning" = "#8DC63F")) +   # CHANGED
   labs(
@@ -160,7 +160,7 @@ p_B_adj
 
 # Journal version: vector PDF with embedded fonts
 ggsave(
-  filename = "W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/Figure_for_ Journal_Paper/Fig7_residual_weeds_vs_grain_cleaning.pdf",
+  filename = "W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/Figure_for_ Journal_Paper/Figure_7.pdf",
   plot = p_B_adj,
   width = 140, height = 90, units = "mm",
   device = cairo_pdf
@@ -168,8 +168,9 @@ ggsave(
 
 # High-resolution PNG for the Word draft
 ggsave(
-  filename = "W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/Figure_for_ Journal_Paper/Fig7_residual_weeds_vs_grain_cleaning.png",
+  filename = "W:/Economic impact of weeds round 2/Reports and papers/Draft Journal Paper/Figure_for_ Journal_Paper/Figure_7.png",
   plot = p_B_adj,
   width = 140, height = 90, units = "mm",
   dpi = 600, bg = "white"
 )
+
