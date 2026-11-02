@@ -80,7 +80,7 @@ labels_study_yr <- c(
   "Sinden\n2001–02",
   "Llewellyn\n2011–13",
   "Hafi\n2020–21",
-  "Ouzman\n2019–21"
+  "Ouzman\n2018–21"
 )
 
 # ---- 2. Plot ---------------------------------------------------
@@ -112,10 +112,10 @@ p_fig6
 # ---- 3. Save ---------------------------------------------------
 
 # Journal version: vector PDF with embedded fonts
-ggsave(file.path(fig_dir, "Fig6_revenue_loss_vs_expenditure_share.pdf"),
+ggsave(file.path(fig_dir, "Figure_6.pdf"),
        plot = p_fig6, width = 140, height = 90, units = "mm", device = cairo_pdf)
 
 # High-resolution PNG for the Word draft
-ggsave(file.path(fig_dir, "Fig6_revenue_loss_vs_expenditure_share.png"),
+ggsave(file.path(fig_dir, "Figure_6.png"),
        plot = p_fig6, width = 140, height = 90, units = "mm", dpi = 600, bg = "white")
 
