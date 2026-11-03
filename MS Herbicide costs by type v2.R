@@ -1,11 +1,11 @@
 # ============================================================
 # MS Figure 9 — Herbicide costs by use category
 # Share of total national herbicide expenditure in Llewellyn et al.
-# (2011–13) and the current study (2019–21), split into chemical
+# (2011–13) and the current study (2018–21), split into chemical
 # and application components, for pre-seeding (fallow + knockdown),
 # pre-emergent and post-emergent herbicides.
 # Data:   herb costs 2016 and 2025.xlsx, sheet "just data"
-#         (2016 = Llewellyn et al. 2011–13; 2025 = current study 2019–21)
+#         (2016 = Llewellyn et al. 2011–13; 2025 = current study 2018–21)
 # Output: vector PDF + 600 dpi PNG for the manuscript
 # ============================================================
 
@@ -92,7 +92,7 @@ p_pct_grouped_ms <- ggplot(costs_pct_grouped,
                     labels = c("Herbicide" = "Chemical", "Application" = "Application")) +
   scale_colour_manual(values = c("Herbicide" = "white", "Application" = "grey15")) +
   guides(colour = "none") +
-  scale_x_discrete(labels = c("2016" = "2011–13", "2025" = "2019–21"),
+  scale_x_discrete(labels = c("2016" = "2011–13", "2025" = "2018–21"),
                    expand = expansion(add = 0.6)) +
   scale_y_continuous(
     labels = label_percent(scale = 1, accuracy = 1),
@@ -110,9 +110,10 @@ p_pct_grouped_ms
 # ---- 3. Save ---------------------------------------------------
 
 # Journal version: vector PDF with embedded fonts
-ggsave(file.path(fig_dir, "Fig9_herbicide_costs_by_use_category.pdf"),
+ggsave(file.path(fig_dir, "Figure_9.pdf"),
        plot = p_pct_grouped_ms, width = 140, height = 90, units = "mm", device = cairo_pdf)
 
 # High-resolution PNG for the Word draft
-ggsave(file.path(fig_dir, "Fig9_herbicide_costs_by_use_category.png"),
+ggsave(file.path(fig_dir, "Figure_9.png"),
        plot = p_pct_grouped_ms, width = 140, height = 90, units = "mm", dpi = 600, bg = "white")
+

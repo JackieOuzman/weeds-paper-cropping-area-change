@@ -60,7 +60,7 @@ drivers_data <- data.frame(
 print(drivers_data)
 
 study_year_labels <- c(
-  "Combellack\n1981–82", "Jones\n1998–99", "Llewellyn\n2011–13", "Ouzman\n2019–21"
+  "Combellack\n1981–82", "Jones\n1998–99", "Llewellyn\n2011–13", "Ouzman\n2018–21"
 )
 
 drivers_long <- drivers_data %>%
@@ -119,10 +119,10 @@ p_ms
 # ---- 3. Save ---------------------------------------------------
 
 # Journal version: vector PDF with embedded fonts
-ggsave(file.path(fig_dir, "Fig8_composition_of_weed_control_expenditure.pdf"),
+ggsave(file.path(fig_dir, "Figure_8.pdf"),
        plot = p_ms, width = 140, height = 90, units = "mm", device = cairo_pdf)
 
 # High-resolution PNG for the Word draft
-ggsave(file.path(fig_dir, "Fig8_composition_of_weed_control_expenditure.png"),
+ggsave(file.path(fig_dir, "Figure_8.png"),
        plot = p_ms, width = 140, height = 90, units = "mm", dpi = 600, bg = "white")
 
